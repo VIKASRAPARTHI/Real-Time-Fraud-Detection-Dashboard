@@ -13,12 +13,12 @@ A real-time transaction monitoring system that uses AI (OpenAI) to detect potent
 - **Frontend**: React, Redux Toolkit, Chart.js, Vite
 - **Backend**: Node.js, Express, Socket.io, Mongoose
 - **Database**: MongoDB
-- **AI**: OpenAI API (with mock fallback)
+- **AI**: OpenAI API
 
 ## Prerequisites
 - Node.js (v14+)
-- MongoDB (Local or Atlas)
-- Docker (Optional)
+- MongoDB (Atlas)
+- Docker
 
 ## Quick Start
 
