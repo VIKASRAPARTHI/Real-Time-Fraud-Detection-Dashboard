@@ -26,10 +26,6 @@ A real-time transaction monitoring system that uses AI (OpenAI/Gemini) to detect
 ```bash
 cd backend
 npm install
-# Create .env file with:
-# MONGO_URI=mongodb://localhost:27017/fraud-detection
-# JWT_SECRET=your_secret
-# OPENAI_API_KEY=your_key (Optional)
 npm run dev
 ```
 
