@@ -1,6 +1,6 @@
 # Real-Time Fraud Detection Dashboard
 
-A real-time transaction monitoring system that uses AI (OpenAI/Gemini) to detect potential fraud patterns.
+A real-time transaction monitoring system that uses AI (OpenAI) to detect potential fraud patterns.
 
 ## Features
 - **Real-time Monitoring**: Live transaction stream via WebSockets.
