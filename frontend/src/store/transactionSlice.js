@@ -31,9 +31,7 @@ export const transactionSlice = createSlice({
     initialState,
     reducers: {
         addTransaction: (state, action) => {
-            // Add new transaction to the beginning of the list
             state.transactions.unshift(action.payload);
-            // Keep only last 100 to avoid memory issues
             if (state.transactions.length > 100) {
                 state.transactions.pop();
             }

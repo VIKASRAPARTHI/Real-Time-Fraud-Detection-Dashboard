@@ -33,8 +33,19 @@ app.get('/', (req, res) => {
 const io = initSocket(server);
 
 // Start Simulation
-const { startSimulation } = require('./controllers/transactionController');
+// Start Simulation
+const { startSimulation, runSimulationStep } = require('./controllers/transactionController');
 startSimulation();
+
+// Manual Trigger for Serverless Environments
+app.get('/api/simulate', async (req, res) => {
+    try {
+        const transaction = await runSimulationStep();
+        res.json({ message: 'Simulation step triggered', transaction });
+    } catch (error) {
+        res.status(500).json({ message: 'Simulation step failed', error: error.message });
+    }
+});
 
 // Error Handling
 app.use((err, req, res, next) => {
@@ -44,6 +55,11 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 
-server.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+// Only listen if running directly (not imported as a module)
+if (require.main === module) {
+    server.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
+}
+
+module.exports = app;

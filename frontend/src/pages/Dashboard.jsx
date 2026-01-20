@@ -17,7 +17,8 @@ function Dashboard() {
         dispatch(getTransactions());
 
         // 2. Setup Socket
-        const socket = io('http://localhost:5000');
+        const socketUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        const socket = io(socketUrl);
 
         socket.on('connect', () => {
             console.log('Connected to socket server');

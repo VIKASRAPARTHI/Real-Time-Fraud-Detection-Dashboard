@@ -20,7 +20,7 @@ function Login() {
 
     useEffect(() => {
         if (isError) {
-            alert(message); // Simple alert for now, could catch with UI toast
+            alert(message);
         }
 
         if (isSuccess || user) {

@@ -16,36 +16,45 @@ const getTransactions = async (req, res) => {
 // Simulation Loop
 let simulationInterval = null;
 
+// Single Simulation Step
+const runSimulationStep = async () => {
+    try {
+        // 1. Generate Mock Data
+        const rawTransaction = generateMockTransaction();
+
+        // 2. AI Analysis
+        const analysis = await analyzeTransaction(rawTransaction);
+
+        // 3. Merge Data
+        const enrichedTransaction = {
+            ...rawTransaction,
+            ...analysis,
+            isFlagged: analysis.riskLevel === 'high' || analysis.riskLevel === 'critical',
+        };
+
+        // 4. Save to DB
+        const transaction = await Transaction.create(enrichedTransaction);
+
+        // 5. Emit via Socket
+        const io = getIO();
+        if (io) {
+            io.emit('new-transaction', transaction);
+        }
+
+        return transaction;
+
+    } catch (error) {
+        console.error('Error in simulation step:', error.message);
+        throw error;
+    }
+};
+
 const startSimulation = () => {
     if (simulationInterval) return;
 
     console.log('Starting transaction simulation...');
-    simulationInterval = setInterval(async () => {
-        try {
-            // 1. Generate Mock Data
-            const rawTransaction = generateMockTransaction();
-
-            // 2. AI Analysis
-            const analysis = await analyzeTransaction(rawTransaction);
-
-            // 3. Merge Data
-            const enrichedTransaction = {
-                ...rawTransaction,
-                ...analysis,
-                isFlagged: analysis.riskLevel === 'high' || analysis.riskLevel === 'critical',
-            };
-
-            // 4. Save to DB
-            const transaction = await Transaction.create(enrichedTransaction);
-
-            // 5. Emit via Socket
-            const io = getIO();
-            io.emit('new-transaction', transaction);
-
-            // console.log(`Processed TXN: ${transaction.transactionId} - Risk: ${transaction.riskLevel}`);
-        } catch (error) {
-            console.error('Error in simulation step:', error.message);
-        }
+    simulationInterval = setInterval(() => {
+        runSimulationStep().catch(err => console.error(err));
     }, 5000); // New transaction every 5 seconds
 };
 
@@ -57,4 +66,4 @@ const stopSimulation = () => {
     }
 }
 
-module.exports = { getTransactions, startSimulation, stopSimulation };
+module.exports = { getTransactions, startSimulation, stopSimulation, runSimulationStep };

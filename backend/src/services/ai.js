@@ -33,7 +33,6 @@ const analyzeTransaction = async (transaction) => {
 };
 
 const mockScoring = (t) => {
-    // Simple rule-based mock for fallback
     let score = 10;
     const factors = [];
 
