@@ -1,0 +1,14 @@
+{
+    "name": "fraud-detection-dashboard",
+    "private": true,
+    "workspaces": [
+        "frontend",
+        "backend"
+    ],
+    "scripts": {
+        "build": "cd frontend && npm run build"
+    },
+    "engines": {
+        "node": "18.x"
+    }
+}
