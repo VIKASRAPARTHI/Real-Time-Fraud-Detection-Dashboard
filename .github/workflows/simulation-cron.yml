@@ -1,0 +1,19 @@
+name: Trigger Fraud Simulation
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch: 
+
+jobs:
+  simulate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Simulation Endpoint
+        run: |
+          if [ -z "${{ secrets.VERCEL_APP_URL }}" ]; then
+            echo "VERCEL_APP_URL secret is not set. Skipping simulation."
+            exit 1
+          fi
+          echo "Triggering simulation at ${{ secrets.VERCEL_APP_URL }}/api/simulate"
+          curl -s "${{ secrets.VERCEL_APP_URL }}/api/simulate"
